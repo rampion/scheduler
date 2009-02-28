@@ -27,14 +27,14 @@ function to_minute_of_day(timestring) {
 };
 function to_string(timespan) {
 	return "from "+timespan.start + " to " + timespan.end + " on day " + timespan.day;
-}
+};
 function comp_timespans(a,b) {
 	return	a.day < b.day ? -1
 				: a.day > b.day ? +1
 				: a.end_minute <= b.start_minute ? -1
 				: a.start_minute >= b.end_minute ? +1
 				: 0; // not equal, just overlapping - but this suffices
-}
+};
 function prep_timespans(timespans) {
 	timespans.forEach(function(timespan) {
 			timespan.start_minute = to_minute_of_day(timespan.start);
@@ -270,9 +270,14 @@ const display = { // keep the option up to date with the name
 				});
 			});
 			const conflicts = [];
+			timespan.start_minute = to_minute_of_day(timespan.start);
+			timespan.end_minute = to_minute_of_day(timespan.end);
 			checklist.forEach(function(checkitem){
 				prep_timespans(checkitem.event.timespans).forEach(function(other){
 					if (comp_timespans(timespan, other) == 0) {
+						console.log("conflict");
+						console.log(timespan);
+						console.log(other);
 						conflicts.push("* "+checkitem.message+" "+to_string(other));
 					}
 				});
