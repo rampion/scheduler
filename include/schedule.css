@@ -1,0 +1,100 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+div#content {
+  padding: 2px;
+  margin: 2px;
+}
+div#file-header {
+  text-align:right;
+}
+div#file-header, div#project-header {
+	padding-bottom: 4px;
+	border-bottom: 2px solid black;
+	margin-bottom: 4px;
+}
+div#popover {
+	position: fixed;
+	z-index: 3;
+	display: none;
+  height: 100%;
+  width: 100%;
+}
+div#popover-background {
+  background: grey;
+	opacity: 0.5;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  margin-top: -2px;
+}
+div#popover-prompt {
+  padding: 10px;
+  background: white;
+  border: 3px solid black;
+  top: 20%;
+  left: 20%;
+  position: absolute;
+}
+label#popover-label {
+  display: block;
+}
+input#project-name {
+	display: block;
+	width:100%;
+}
+textarea#project-description {
+	display: block;
+	width:100%;
+	height:100px;
+	overflow:auto;
+}
+div#project-details-section label {
+	margin-left:10px;
+}
+div#project-details-section select {
+	margin-right:10px;
+}
+.actions {
+	border-bottom: 1px dashed black;
+}
+div#templates {
+	display: none;
+}
+input.hour, input.minute {
+	text-align: right;
+}
+input.name, textarea.description {
+	display: block;
+}
+div.info {
+	margin-left: 10px;
+	float: left;
+}
+.existing-resources, .other-resources, .timespan-item
+{
+	margin-left: 10px;
+}
+.existing
+{
+	display: none;
+}
+textarea.description { 
+	width: 100%; 
+	height: 100px;
+}
+input.name { width: 100%; }
+.clear {
+	float: left;
+	clear: both;
+}
+.item  {
+	padding-bottom: 10px;
+	float: left;
+	clear: left;
+}
+.calendar
+{
+	float: left;
+}

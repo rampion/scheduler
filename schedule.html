@@ -1,0 +1,203 @@
+<html>
+	<head>
+		<title>Scheduler</title>
+		<link rel="stylesheet" type="text/css" href="include/schedule.css"/>
+		<link rel="stylesheet" type="text/css" href="include/calendar.css"/>
+		<script type="text/javascript" src="include/file.js"></script>
+		<script type="text/javascript" src="include/schedule.js"></script>
+	</head>
+	<body>
+		<div id="popover">
+			<div id="popover-background"></div>
+			<div id="popover-prompt">
+				<label id="popover-label" ></label>
+				<input id="popover-input" />
+				<button id="popover-ok" ></button>
+				<button id="popover-cancel">Cancel</button>
+			</div>
+		</div>
+		<div id="content">
+			<div id="file-header">
+				<button id="open-project">Open New/Existing Project</button>
+				<button id="save-project" >Save Project</button>
+				<button id="save-project-as" >Save Project As</button>
+			</div>
+			<div id="project-header">
+				<div id="project-name-section">
+					<label for="project-name">Name:</label>
+					<input id="project-name"/>
+				</div>
+				<div id="project-description-section">
+					<label for="project-description">Description:</label>
+					<textarea id="project-description"></textarea>
+				</div>
+				<div id="project-details-section">
+					<label for="events">Events:</label>
+					<select id="events" selectedIndex="-1">
+						<optgroup class="actions" id="event-actions">
+							<option value="new" id="new-event">New Event</option>
+						</optgroup>
+						<optgroup id="existing-events">
+						</optgroup>
+					</select>
+					<label for="resources">Resources:</label>
+					<select id="resources">
+						<optgroup class="actions" id="resource-actions">
+							<option value="new"  id="new-resource">New Resource</option>
+						</optgroup>
+						<optgroup id="existing-resources">
+						</optgroup>
+					</select>
+					<button id="show-all">Show All</button>
+				</div>
+			</div>
+			<div id="display-area"></div>
+			<div id='templates'>
+				<div id="existing-timespan-template">
+					<label id="#{timespan}-description"></label>
+					<button id="#{timespan}-remove">Remove</button>
+				</div>
+				<div id="new-timespan-template">
+					<div class="timespan-item" id="#{timespan}">
+						Day: 
+						<select id="#{timespan}-day" class='day'>
+							<option value="A">A</option>
+							<option value="B">B</option>
+							<option value="C">C</option>
+							<option value="D">D</option>
+							<option value="E">E</option>
+							<option value="F">F</option>
+						</select>
+						Start:
+						<input class='hour' size=1 maxlength=2 id="#{timespan}-start-hour"> :
+						<input class='minute' size=1 maxlength=2 id="#{timespan}-start-minute">
+						<select id="#{timespan}-start-meridian" class='meridian'>
+							<option value="AM">AM</option>
+							<option value="PM">PM</option>
+						</select>
+						End:
+						<input class='hour' size=1 maxlength=2 id="#{timespan}-end-hour"> :
+						<input class='minute' size=1 maxlength=2 id="#{timespan}-end-minute">
+						<select id="#{timespan}-end-meridian" class='meridian'>
+							<option value="AM">AM</option>
+							<option value="PM">PM</option>
+						</select>
+						<button id="#{timespan}-add">Add</button>
+					</div>
+				</div>
+				<div id="existing-event-template">
+					<div id="#{event}" class="existing">
+						<label id="#{event}-name"></label>
+						<button id="#{event}-remove">Remove</button>
+					</div>
+				</div>
+				<select id="other-event-template">
+					<option id="#{event}"></option>
+				</select>
+				<div id="existing-resource-template">
+					<div id="#{resource}" class="existing">
+						<label id="#{resource}-name"></label>
+						<button id="#{resource}-remove">Remove</button>
+					</div>
+				</div>
+				<select id="other-resource-template">
+					<option id="#{resource}"></option>
+				</select>
+				<div id="event-template">
+						#{calendar}
+						<div class="info">
+							<div class="name-section">
+								<label for="#{id}-name">Name:</label>
+								<input id="#{id}-name" class='name'/>
+							</div>
+							<div class="description-section">
+								<label for="#{id}-description">Description:</label>
+								<textarea id="#{id}-description" class='description'></textarea>
+							</div>
+							<div id="#{id}-color">
+							</div>
+							<div id="#{id}-timespans">
+								Timespans:
+								<div id="#{id}-existing-timespans">
+								</div>
+								#{new-timespan}
+							</div>
+							<div id="#{id}-resources">
+								Resources:
+								<div class="existing-resources" id="#{id}-existing-resources">
+								</div>
+								<select class="other-resources" id="#{id}-other-resources">
+								</select>
+							</div>
+							<button id="#{id}-delete">Delete Event</button>
+					</div>
+				</div>
+				<div id="resource-template">
+						#{calendar}
+						<div class="info">
+							<div class="name-section">
+								<label for="#{id}-name">Name:</label>
+								<input id="#{id}-name" class='name'/>
+							</div>
+							<div class="description-section">
+								<label for="#{id}-description">Description:</label>
+								<textarea id="#{id}-description" class='description'></textarea>
+							</div>
+							<div id="#{id}-events">
+								Events:
+								<div id="#{id}-existing-events">
+								</div>
+								<select id="#{id}-other-events">
+								</select>
+							</div>
+							<button id="#{id}-delete">Delete Resource</button>
+						</div>
+				</div>
+				<div id="calendar-template">
+					<div class='calendar'>
+						<div class='scale'>
+							<div class="title"></div>
+							<div class='row'></div>
+							<div class='row'></div>
+							<div class='row'></div>
+							<div class='row'></div>
+							<div class='row'></div>
+							<div class='row'></div>
+							<div class='row'></div>
+							<div class='row'></div>
+						</div>
+						<div class='col'>
+							<div class="title"></div>
+							<div class='row time'>0800</div>
+							<div class='row time'>0900</div>
+							<div class='row time'>1000</div>
+							<div class='row time'>1100</div>
+							<div class='row time'>1200</div>
+							<div class='row time'>1300</div>
+							<div class='row time'>1400</div>
+							<div class='row time'>1500</div>
+						</div>
+						<div class='col day A' id="#{id}-day-A">
+							<div class="title">A</div>
+						</div>
+						<div class='col day B' id="#{id}-day-B">
+							<div class="title">B</div>
+						</div>
+						<div class='col day C' id="#{id}-day-C">
+							<div class="title">C</div>
+						</div>
+						<div class='col day D' id="#{id}-day-D">
+							<div class="title">D</div>
+						</div>
+						<div class='col day E' id="#{id}-day-E">
+							<div class="title">E</div>
+						</div>
+						<div class='col day F' id="#{id}-day-F">
+							<div class="title">F</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

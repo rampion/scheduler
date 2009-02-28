@@ -1,0 +1,65 @@
+.calendar
+{
+	border: 1px solid black;
+	padding: 0px;
+	margin: 0px;
+	text-align: center;
+	position: relative;
+}
+.calendar .scale
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	z-index: 2;
+}
+.calendar .col
+{
+	height: 500px;  /* 20px + 8 hrs * 60 pixels / row */
+	float: left;
+}
+.calendar .day
+{
+	width: 100px;
+	position: relative;
+}
+.calendar .col + .col
+{
+	border-left: 1px solid black;
+}
+.calendar .title
+{
+	height: 19px;
+	border-bottom: 1px solid black;
+}
+.calendar .row /* 1 row per hour */
+{
+	height: 60px; /* 1 pixel per minute */
+	left: 0;
+	right: 0;
+}
+.calendar .row + .row
+{
+	border-top: 1px dashed black;
+	height: 59px !important; /* adjust for border */
+}
+.calendar .time
+{
+	width: 40px !important;
+}
+.calendar .time + .time
+{
+	border-top: 1px solid black;
+}
+.calendar .timespan
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+.calendar .event1 { border-top: 1px solid #f00; border-bottom: 1px solid #f00; background: #f88; }
+.calendar .event2 { border-top: 1px solid #0f0; border-bottom: 1px solid #0f0; background: #8f8; }
+.calendar .event3 { border-top: 1px solid #00f; border-bottom: 1px solid #00f; background: #88f; }
+.calendar .event4 { border-top: 1px solid #0ff; border-bottom: 1px solid #0ff; background: #8ff; }
+.calendar .event5 { border-top: 1px solid #f0f; border-bottom: 1px solid #f0f; background: #f8f; }
+.calendar .event6 { border-top: 1px solid #ff0; border-bottom: 1px solid #ff0; background: #ff8; }
