@@ -102,19 +102,27 @@ function unbind_event_resource(event, resource) {
 }
 function to_filename( shortname ) { return getCurrentDirectory() + 'projects/' + shortname + '.json'; }
 function popover_prompt( label, ok , action ) {
-  $('popover').style.display = 'block';
-  $('popover-label').innerHTML = label;
-  $('popover-ok').innerHTML = ok;
-  var on_ok = function(ev) { 
-    var shortname = $('popover-input').value
-    if (shortname !="") {
-      var filename = to_filename( shortname )
-      action(filename);
-    }
-    $('popover-ok').removreventListener('click', on_ok, false);
-    $('popover').style.display = 'none';
-  };
-  $('popover-ok').addEventListener('click', on_ok, false);
+	try { 
+		$('popover').style.display = 'block';
+		$('popover-label').innerHTML = label;
+		$('popover-ok').innerHTML = ok;
+		var on_ok = function(ev) { 
+			try { 
+				var shortname = $('popover-input').value
+				if (shortname !="") {
+					var filename = to_filename( shortname )
+					action(filename);
+				}
+				$('popover-ok').removeEventListener('click', on_ok, false);
+				$('popover').style.display = 'none';
+			} catch(e) {
+				alert("whoops! Something went wrong - " + e);
+			}
+		};
+		$('popover-ok').addEventListener('click', on_ok, false);
+	} catch (e) {
+		alert("couldnt' set up the popover - sorry - "+e);
+	}
 }
 var project = null;
 var filename = null;
@@ -256,21 +264,18 @@ const display = { // keep the option up to date with the name
 			checklist.push({event:event, message:"current event "+event.name});
 			event.resources.forEach(function(resource) {
 				resource.events.forEach(function(other_event) {
-					checklist.push({event:other_event, message:"event "+other_event.name+" for resource "+resource.name});
+						if (event != other_event) {
+							checklist.push({event:other_event, message:"event "+other_event.name+" for resource "+resource.name});
+						}
 				});
 			});
 			const conflicts = [];
-			const checked = {};
 			checklist.forEach(function(checkitem){
-				if (checked[checkitem.event.id]) {
-					return;
-				}
 				prep_timespans(checkitem.event.timespans).forEach(function(other){
 					if (comp_timespans(timespan, other) == 0) {
 						conflicts.push("* "+checkitem.message+" "+to_string(other));
 					}
 				});
-				checked[checkitem.event.id] = true;
 			});
 			if (conflicts.length > 0) {
 				alert("Can't add new timespan "+to_string(timespan)+", conflicts with\n"+ conflicts.join("\n"));
