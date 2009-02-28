@@ -598,7 +598,7 @@ window.onload = function(ev) {
 		reset();
 
 		// TESTING
-		load_project(to_filename('example_project'));
+		//load_project(to_filename('example_project'));
 		//on_select_change('resources')( { target: { value: 0, selectedIndex: 1, options: $('resources')  } } );
   } catch(ex) {
     alert(ex);
