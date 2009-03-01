@@ -108,13 +108,13 @@ function popover_prompt( label, ok , action ) {
 		$('popover-ok').innerHTML = ok;
 		var on_ok = function(ev) { 
 			try { 
+				$('popover-ok').removeEventListener('click', on_ok, false);
+				$('popover').style.display = 'none';
 				var shortname = $('popover-input').value
 				if (shortname !="") {
 					var filename = to_filename( shortname )
 					action(filename);
 				}
-				$('popover-ok').removeEventListener('click', on_ok, false);
-				$('popover').style.display = 'none';
 			} catch(e) {
 				alert("whoops! Something went wrong - " + e);
 			}
@@ -547,6 +547,7 @@ function load_project( _filename ) {
 				description:"(Enter project description)", 
 				events:[], resources:[] }, _filename );
 		}
+		$('display-area').innerHTML = '';
 	} catch(ev) {
 		alert( "Unable to load project from file " + _filename + "\n" + ev );
 	}
