@@ -225,7 +225,8 @@ const display = { // keep the option up to date with the name
 			const column_id = calendar_id + '-day-' + timespan.day;
 			const top = timespan.start_minute - 8*60 + 20;
 			const height = timespan.end_minute - timespan.start_minute;
-			//console.log(timespan);
+
+			console.log("showing " + timespan.id + " "+timespan.toSource());
 			//console.log({top:top,height:height});
 			const cal_timespan_id = calendar_id+'-'+timespan.id;
 			appendHTML(column_id, '<div class="timespan '+klass+'" id="'+cal_timespan_id+'"></div>');
@@ -235,7 +236,7 @@ const display = { // keep the option up to date with the name
     };
 		const existing_timespan_template = $('existing-timespan-template').innerHTML;
 		function add_timespan(timespan) { 
-      show_timespan('event1', timespan);
+      const cal_timespan_id = show_timespan('event1', timespan);
 
       const list_timespan_id = event.id+'-'+timespan.id;
       const list_timespan_div = append(event.id+'-existing-timespans', 'div',
@@ -332,6 +333,7 @@ const display = { // keep the option up to date with the name
 					$(eresource_id).style.display = 'none';
 
           resource.events.forEach(function(other) { 
+            if (other == event) { return; }
             other_count[other.id]--;
             if (other_count[other.id] == 0) {
               other_timespans[other.id].forEach(function(timespan_id) {
@@ -354,6 +356,7 @@ const display = { // keep the option up to date with the name
 			$(oresource_id).style.display = 'none';
 
       resource.events.forEach(function(other) { 
+        if (other == event) { return; }
         if (other_count[other.id] == 0) {
           other.timespans.forEach(function(timespan) {
             timespan_id = show_timespan('event0', timespan)
