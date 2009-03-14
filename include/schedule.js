@@ -218,8 +218,7 @@ const display = { // keep the option up to date with the name
 		}, false);
 
 		// ADD TIMESPANS
-		const existing_timespan_template = $('existing-timespan-template').innerHTML;
-		function show_timespan(timespan) {
+    function show_timespan(klass, timespan) {
 			timespan.start_minute = to_minute_of_day(timespan.start);
 			timespan.end_minute = to_minute_of_day(timespan.end);
 
@@ -229,25 +228,30 @@ const display = { // keep the option up to date with the name
 			//console.log(timespan);
 			//console.log({top:top,height:height});
 			const cal_timespan_id = calendar_id+'-'+timespan.id;
-			appendHTML(column_id, '<div class="timespan event1" id="'+cal_timespan_id+'"></div>');
+			appendHTML(column_id, '<div class="timespan '+klass+'" id="'+cal_timespan_id+'"></div>');
 			$(cal_timespan_id).style.top = top;
 			$(cal_timespan_id).style.height= height;
+      return cal_timespan_id;
+    };
+		const existing_timespan_template = $('existing-timespan-template').innerHTML;
+		function add_timespan(timespan) { 
+      show_timespan('event1', timespan);
 
-			const list_timespan_id = event.id+'-'+timespan.id;
-			const list_timespan_div = append(event.id+'-existing-timespans', 'div',
-					existing_timespan_template.replace(/#{timespan}/g, list_timespan_id)
-			);
-			list_timespan_div.className = 'timespan-item exisiting';
-			list_timespan_div.id = list_timespan_id;
-			$(list_timespan_id+'-description').innerHTML = to_string(timespan);
+      const list_timespan_id = event.id+'-'+timespan.id;
+      const list_timespan_div = append(event.id+'-existing-timespans', 'div',
+          existing_timespan_template.replace(/#{timespan}/g, list_timespan_id)
+      );
+      list_timespan_div.className = 'timespan-item exisiting';
+      list_timespan_div.id = list_timespan_id;
+      $(list_timespan_id+'-description').innerHTML = to_string(timespan);
 
-			$(list_timespan_id+'-remove').addEventListener('click', function(ev) {
-					list_timespan_div.parentNode.removeChild($(list_timespan_id));
-					$(cal_timespan_id).parentNode.removeChild($(cal_timespan_id));
-					event.timespans.splice( event.timespans.indexOf(timespan), 1 );
-			}, false);
+      $(list_timespan_id+'-remove').addEventListener('click', function(ev) {
+          list_timespan_div.parentNode.removeChild($(list_timespan_id));
+          $(cal_timespan_id).parentNode.removeChild($(cal_timespan_id));
+          event.timespans.splice( event.timespans.indexOf(timespan), 1 );
+      }, false);
 		};
-		event.timespans.forEach(show_timespan);
+		event.timespans.forEach(add_timespan);
 
 		$(new_timespan_id+'-add').addEventListener('click', function(ev) {
 			const timespan = create_new.timespans();
@@ -303,6 +307,14 @@ const display = { // keep the option up to date with the name
 			appendHTML(event.id + '-existing-resources', eresource_html);
 			appendHTML(event.id + '-other-resources', oresource_html);
 		});
+
+    other_count = {};
+    other_timespans = {};
+		project.events.forEach(function(other) { 
+        other_count[other.id] = 0; 
+        other_timespans[other.id] = [];
+    });
+
 		// then attach event listeners
 		project.resources.forEach(function(resource) {
 			const oresource_id = event.id + '-other-' + resource.id;
@@ -318,6 +330,16 @@ const display = { // keep the option up to date with the name
 
 					$(oresource_id).style.display = 'block';
 					$(eresource_id).style.display = 'none';
+
+          resource.events.forEach(function(other) { 
+            other_count[other.id]--;
+            if (other_count[other.id] == 0) {
+              other_timespans[other.id].forEach(function(timespan_id) {
+                $(timespan_id).parentNode.removeChild($(timespan_id));
+              });
+              other_timespans[other.id] = [];
+            }
+          });
 				}
 				catch (e) {
 					alert("Unable to remove resource : " + e);
@@ -325,12 +347,24 @@ const display = { // keep the option up to date with the name
 			}, false);
 			//console.log("added event listener for " + resource.name + "["+eresource_id+"]");
 		});
-		event.resources.forEach(function(resource) {
+    function show_resource(resource) {
 			const eresource_id = event.id + '-existing-' + resource.id;
 			const oresource_id = event.id + '-other-' + resource.id;
 			$(eresource_id).style.display = 'block';
 			$(oresource_id).style.display = 'none';
-		});
+
+      resource.events.forEach(function(other) { 
+        if (other_count[other.id] == 0) {
+          other.timespans.forEach(function(timespan) {
+            timespan_id = show_timespan('event0', timespan)
+            $(timespan_id).innerHTML = other.name;
+            other_timespans[other.id].push( timespan_id );
+          });
+        }
+        other_count[other.id]++;
+      });
+    };
+		event.resources.forEach(show_resource);
 		$(event.id + '-other-resources').selectedIndex = -1;
 		$(event.id + '-other-resources').addEventListener('change', function(ev) {
 			try { 
@@ -339,10 +373,7 @@ const display = { // keep the option up to date with the name
 
 				bind_event_resource(event, resource);
 
-				const eresource_id = event.id + '-existing-' + resource.id;
-				const oresource_id = event.id + '-other-' + resource.id;
-				$(eresource_id).style.display = 'block';
-				$(oresource_id).style.display = 'none';
+        show_resource(resource);
 			} catch(e) {
 				alert("Unable to add resource : " + e);
 			}

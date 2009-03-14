@@ -57,6 +57,7 @@
 	left: 0;
 	right: 0;
 }
+.calendar .event0 { border-top: 1px solid #000; border-bottom: 1px solid #000; background: #888; }
 .calendar .event1 { border-top: 1px solid #f00; border-bottom: 1px solid #f00; background: #f88; }
 .calendar .event2 { border-top: 1px solid #0f0; border-bottom: 1px solid #0f0; background: #8f8; }
 .calendar .event3 { border-top: 1px solid #00f; border-bottom: 1px solid #00f; background: #88f; }
