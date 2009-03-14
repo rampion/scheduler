@@ -292,7 +292,7 @@ const display = { // keep the option up to date with the name
 			}
 
 			event.timespans.push(timespan);
-			show_timespan(timespan);
+			add_timespan(timespan);
 		}, false);
 
 		// ADD RESOURCES
