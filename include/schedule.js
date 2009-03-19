@@ -627,17 +627,60 @@ window.onload = function(ev) {
 		// let the user choose to display an event or a resource
 		$('events').addEventListener('change', on_select_change('events'), false);
 		$('resources').addEventListener('change', on_select_change('resources'), false);
-		$('show-all').addEventListener('click', function(ev) {
+		$('print-view').addEventListener('click', function(ev) {
 			$('display-area').style.display = 'none';
 			$('display-area').innerHTML = '';
-			append('display-area', 'h3', 'Resources').className = 'clear';
+      console.log("displaying resources...");
 			project.resources.forEach(function(resource) { 
-				display.resources(resource); 
+        try {
+          const option = $('option-'+resource.id);
+          const calendar_id = resource.id + '-calendar';
+          const calendar_html = $('calendar-template').innerHTML.replace(/#{id}/g, calendar_id)
+          const resource_html = $('resource-template').innerHTML.replace(/#{([^}]+)}/g, function(m, m1) {
+              switch (m1) {
+              case 'calendar'			: return calendar_html;
+              case 'id'						: return resource.id;
+              default							: return m1;
+              }
+          });
+          const div = append('display-area', 'div', resource_html)
+          div.id = resource.id;
+          div.className = 'item';
+          $(resource.id + '-name').value = resource.name;
+          //console.log( resource.name );
+        } catch (e) {
+          console.log( e );
+        }
 			});
-			append('display-area', 'h3', 'Events').className = 'clear';
-			project.events.forEach(function(event) { 
-				display.events(event); 
-			});
+      console.log("...done");
+
+      console.log("displaying events...");
+      // ADD TIMESPANS
+      var class_num = 0;
+      project.events.forEach(function(event) {
+        try {
+          class_num %= 6;
+          class_num++;
+          event.timespans.forEach(function (timespan) {
+            timespan.start_minute = to_minute_of_day(timespan.start);
+            timespan.end_minute = to_minute_of_day(timespan.end);
+
+            event.resources.forEach(function(resource) {
+              const calendar_id = resource.id + '-calendar';
+              const column_id = calendar_id + '-day-' + timespan.day;
+              const top = timespan.start_minute - 8*60 + 20;
+              const height = timespan.end_minute - timespan.start_minute;
+              const cal_timespan_id = calendar_id+'-'+timespan.id;
+              appendHTML(column_id, '<div class="timespan event'+class_num+'" id="'+cal_timespan_id+'">'+ event.name+'</div>');
+              $(cal_timespan_id).style.top = top;
+              $(cal_timespan_id).style.height= height; 
+            });
+          });
+        } catch (e) {
+          console.log( e );
+        }
+      });
+      console.log("...done");
 			$('display-area').style.display = 'block';
 		}, false);
 		reset();
