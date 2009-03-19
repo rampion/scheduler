@@ -98,3 +98,23 @@ input.name { width: 100%; }
 {
 	float: left;
 }
+#project-description-section, .description-section { display: none; }
+
+@media print {
+  /* printing settings */
+  #project-header, #file-header, button, select, .new-timespan-item {
+    display: none !important;
+  }
+  .resource-section, .timespan-section, .event-section {
+    display: none !important;
+  }
+  .calendar {
+    float: none;
+  }
+  .info {
+    float: none;
+  }
+  .item {
+    page-break-after:always;
+  }
+}

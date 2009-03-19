@@ -58,7 +58,7 @@
 					<button id="#{timespan}-remove">Remove</button>
 				</div>
 				<div id="new-timespan-template">
-					<div class="timespan-item" id="#{timespan}">
+					<div class="new-timespan-item timespan-item" id="#{timespan}">
 						Day: 
 						<select id="#{timespan}-day" class='day'>
 							<option value="A">A</option>
@@ -116,13 +116,13 @@
 							</div>
 							<div id="#{id}-color">
 							</div>
-							<div id="#{id}-timespans">
+							<div class="timespan-section" id="#{id}-timespans">
 								Timespans:
 								<div id="#{id}-existing-timespans">
 								</div>
 								#{new-timespan}
 							</div>
-							<div id="#{id}-resources">
+							<div class="resource-section" id="#{id}-resources">
 								Resources:
 								<div class="existing-resources" id="#{id}-existing-resources">
 								</div>
@@ -143,7 +143,7 @@
 								<label for="#{id}-description">Description:</label>
 								<textarea id="#{id}-description" class='description'></textarea>
 							</div>
-							<div id="#{id}-events">
+							<div class="event-section" id="#{id}-events">
 								Events:
 								<div id="#{id}-existing-events">
 								</div>

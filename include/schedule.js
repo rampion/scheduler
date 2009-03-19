@@ -197,7 +197,7 @@ const display = { // keep the option up to date with the name
 		});
 		const div = append('display-area', 'div', event_html)
 		div.id = event.id;
-		div.className = 'item';
+		div.className = 'item event';
 
 		link_name(event.id +'-name', event, option);
 		link(event.id +'-description', event, 'description');
@@ -643,7 +643,7 @@ window.onload = function(ev) {
 		reset();
 
 		// TESTING
-		//load_project(to_filename('example_project'));
+		//load_project(to_filename('jds-ls'));
 		//on_select_change('resources')( { target: { value: 0, selectedIndex: 1, options: $('resources')  } } );
   } catch(ex) {
     alert(ex);
